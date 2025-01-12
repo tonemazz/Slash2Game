@@ -30,7 +30,7 @@ AEnemy::AEnemy()
 
 	HealthBarComponent = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBarComponent->SetupAttachment(GetRootComponent());
-
+	//////
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
