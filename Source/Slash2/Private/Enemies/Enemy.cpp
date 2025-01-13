@@ -30,7 +30,7 @@ AEnemy::AEnemy()
 
 	HealthBarComponent = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBarComponent->SetupAttachment(GetRootComponent());
-	//////
+
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -91,7 +91,8 @@ void AEnemy::PawnSeen(APawn* SeenPawn)
 		EnemyState != EEnemyState::EES_Dead &&
 		EnemyState != EEnemyState::EES_Chasing &&
 		EnemyState < EEnemyState::EES_Attacking &&
-		SeenPawn->ActorHasTag(FName("SlashCharacter"));
+		SeenPawn->ActorHasTag(FName("SlashCharacter")) &&
+		!SeenPawn->ActorHasTag(FName("Dead"));
 
 	if (bShouldChaseTarget)
 	{
@@ -158,6 +159,7 @@ void AEnemy::Die_Implementation()
 		HideHealthBar();
 		SetLifeSpan(DeathDespawnTime);
 		EquippedWeapon->SetLifeSpan(DeathDespawnTime);
+		Tags.Add(FName("Dead"));
 }
 
 bool AEnemy::InTargetRange(AActor* Target, double Radius)
@@ -249,7 +251,7 @@ void AEnemy::CheckPatrolTarget()
 
 void AEnemy::CheckCombatTarget()
 {
-	if (IsOutsideCombatRadius())
+	if (IsOutsideCombatRadius() || CombatTarget->ActorHasTag(FName("Dead")))
 	{
 		ClearAttackTimer();
 		LoseInterest();

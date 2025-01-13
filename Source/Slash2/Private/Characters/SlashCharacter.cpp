@@ -148,6 +148,7 @@ void ASlashCharacter::EKeyPressed(const FInputActionValue& Value)
 			EquippedWeapon = OverlappingWeapon;
 			OverlappingWeapon = nullptr;
 
+
 		}
 
 	}
@@ -205,7 +206,7 @@ void ASlashCharacter::Die_Implementation()
 	GetMesh()->SetSimulatePhysics(true);
 	GetMesh()->SetAllBodiesSimulatePhysics(true);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-
+	Tags.Add(FName("Dead"));
 }
 
 float ASlashCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
